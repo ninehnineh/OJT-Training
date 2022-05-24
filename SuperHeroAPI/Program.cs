@@ -20,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ISuperHeroServices, SuperHeroServices>();
 builder.Services.AddTransient<ICharacterServices, CharacterServices>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();  
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 // Configure the HTTP request pipeline.

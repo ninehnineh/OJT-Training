@@ -18,15 +18,7 @@ namespace SuperHeroAPI.Services
             Context = context;
             Mapper = mapper;
         }
-        private static List<Character> Characters = new List<Character>
-        {
-            new Character(),
-            new Character
-            {
-                Id = 1,
-                Name = "Sam"
-            }
-        };
+        
         public async Task<ServiceResponses<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             var serviceResponse = new ServiceResponses<List<GetCharacterDto>>();
@@ -65,7 +57,7 @@ namespace SuperHeroAPI.Services
             try
             {
                 // FirstOrDefault return null if no matching was found then throw exception
-                var character = Characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
+                Character? character = await Context.Characters.FirstOrDefaultAsync(c => c.Id == updatedCharacter.Id);
 
                 character.Name = updatedCharacter.Name;
                 character.HitPoints = updatedCharacter.HitPoints;
@@ -73,6 +65,8 @@ namespace SuperHeroAPI.Services
                 character.Defense = updatedCharacter.Defense;
                 character.Intelligence = updatedCharacter.Intelligence;
                 character.Class = updatedCharacter.Class;
+
+                await Context.SaveChangesAsync();
 
                 serviceResponse.Data = Mapper.Map<GetCharacterDto>(character);
             }
@@ -89,11 +83,12 @@ namespace SuperHeroAPI.Services
             var serviceResponse = new ServiceResponses<List<GetCharacterDto>>();
             try
             {
-                var character = Characters.First(c => c.Id == Id);
+                var character = await Context.Characters.FirstAsync(c => c.Id == Id);
 
-                Characters.Remove(character);
+                Context.Characters.Remove(character);
+                await Context.SaveChangesAsync();
 
-                serviceResponse.Data = Characters.Select(c => Mapper.Map<GetCharacterDto>(c)).ToList();
+                serviceResponse.Data = Context.Characters.Select(c => Mapper.Map<GetCharacterDto>(c)).ToList();
             }
             catch (Exception ex)
             {

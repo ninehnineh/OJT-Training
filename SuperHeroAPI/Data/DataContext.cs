@@ -8,6 +8,7 @@ namespace SuperHeroAPI.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<SuperHero> SuperHeroes { get; set; } = null!;
         public DbSet<Character> Characters { get; set; } = null!;
-       
+        public DbSet<User> Users { get; set; } = null!;
+
     }
 }

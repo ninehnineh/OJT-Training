@@ -50,7 +50,7 @@ namespace SuperHeroAPI.Controllers
         [HttpPut]
         public async Task<ActionResult<ServiceResponses<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
         {
-            var response = await CharactorService.GetCharacterById(updatedCharacter.Id);
+            var response = await CharactorService.UpdateCharacter(updatedCharacter);
             if (response.Data == null)
                 return NotFound(response);
             return Ok(response);
